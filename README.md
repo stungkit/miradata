@@ -28,9 +28,19 @@ pip install -r requirements.txt
 
 - For each column C, a set of columns identified which tend to confuse with the column C.
 
+- How to run
+```
+python main.py --analyze_confusion
+```
+
 ### Identify Representative Aliases 
 
 - For each column C, find several 3-5 most represenative aliases. 
+
+- How to run
+```
+python main.py --get_rep_aliases 
+```
 
 ### Paraphrase (Backtranslation)
 
