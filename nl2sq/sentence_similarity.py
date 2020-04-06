@@ -6,15 +6,6 @@ from random import sample
 import sys
 from nltk.corpus import stopwords
 
-# TODO: make it param
-glovePath = '~/Desktop/squad_vteam/data_v2/glove.840B.300d.w2vformat.txt'
-
-print("Loading the glove...")
-model1 = gensim.models.KeyedVectors.load_word2vec_format(
-    glovePath, binary=False, unicode_errors='ignore')
-print("Successfully loaded the file.")
-
-
 class PhraseVector:
     """
     <Usage>
@@ -22,13 +13,9 @@ class PhraseVector:
     phraseVector2 = PhraseVector(userInput2)
     similarityScore  = phraseVector1.CosineSimilarity(phraseVector2.vector)
     """
-
-    def __init__(self, phrase):
+    def __init__(self, phrase, embedding):
+        self.embedding = embedding
         self.vector = self.PhraseToVec(phrase)
-    # <summary> Calculates similarity between two sets of vectors based on the averages of the sets.</summary>
-    # <param>name = "vectorSet" description = "An array of arrays that needs to be condensed into a single array (vector). In this class, used to convert word vecs to phrases."</param>
-    # <param>name = "ignore" description = "The vectors within the set that need to be ignored. If this is an empty list, nothing is ignored. In this class, this would be stop words."</param>
-    # <returns> The condensed single vector that has the same dimensionality as the other vectors within the vecotSet.</returns>
 
     def ConvertVectorSetToVecAverageBased(self, vectorSet, ignore=[]):
         if len(ignore) == 0:
@@ -44,7 +31,7 @@ class PhraseVector:
         vectorSet = []
         for aWord in wordsInPhrase:
             try:
-                wordVector = model1[aWord]
+                wordVector = self.embedding[aWord]
                 vectorSet.append(wordVector)
             except:
                 pass

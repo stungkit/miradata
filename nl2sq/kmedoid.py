@@ -25,7 +25,7 @@ def kMedoids(D, k, tmax=100):
         if r < c and r not in invalid_medoid_inds:
             invalid_medoid_inds.add(c)
     valid_medoid_inds = list(valid_medoid_inds - invalid_medoid_inds)
-
+    
     if k > len(valid_medoid_inds):
         raise Exception('too many medoids (after removing {} duplicate points)'.format(
             len(invalid_medoid_inds)))

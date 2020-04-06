@@ -16,6 +16,7 @@ import torch
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
+import gensim
 plt.switch_backend('agg')
 
 from . import encoder_rnn
@@ -199,17 +200,6 @@ def tensorsFromPair(input_lang, output_lang, pair):
     return (input_tensor, target_tensor)
 
 
-def build_embedding(w2id, model):
-    emb = np.zeros((len(w2id) + 2, 300))  # plus two because of EOS, SOS
-    for _, (word, i) in enumerate(w2id.items()):
-        try:
-            emb[i] = model[word]
-        except KeyError:
-            #import pdb; pdb.set_trace()
-            emb[i] = np.random.normal(size=(300, )) * 8
-    return emb
-
-
 def load_jsonl(jsonl_path):
     sql_data = []
     print("Loading data from %s" % jsonl_path)
@@ -233,3 +223,10 @@ def preprocess(filename):
             line = line.rstrip()
             list_of_sentences.append(line)
     return list_of_sentences
+
+def load_meta(glovePath):
+    print("Loading the glove...")
+    model1 = gensim.models.KeyedVectors.load_word2vec_format(
+        glovePath, binary=False, unicode_errors='ignore')
+    print("Successfully loaded the file.")
+    return model1
