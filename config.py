@@ -8,7 +8,9 @@ import multiprocessing
 
 def model_config(parser):
     parser.add_argument('--embedding_dim', type=int, default=300)
-    parser.add_argument('--reduction_factor', type=int, default=0.333)
+    parser.add_argument('--reduction_factor', type=int, default=0.5)
+    parser.add_argument('--max_num_cluster', type=int, default=20)
+    parser.add_argument('--min_num_aliases', type=int, default=5)
     parser.add_argument('--philly_on', action='store_true')
     parser.add_argument('--get_rep_aliases', action='store_true')
     parser.add_argument('--analyze_confusion', action='store_true')

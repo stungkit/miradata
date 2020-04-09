@@ -15,7 +15,7 @@ from .sentence_similarity import PhraseVector
 from .kmedoid import kMedoids
 
 
-def assign_word2cluster(word_list, cluster_labels):
+def __assign_word2cluster(word_list, cluster_labels):
     '''
     RETURNS: dict {"cluster":[words  assigend to cluster]}
     '''
@@ -38,7 +38,7 @@ def array_gen(aliases, embedding, nwords, embedding_dim):
     return np_arrays, wordlist
 
 
-def get_rep_aliases(schema_meta, reduction_factor, embedding, embedding_dim, max_num_cluster):
+def get_rep_aliases(schema_meta, reduction_factor, embedding, embedding_dim, min_num_aliases, max_num_cluster):
     col_alias = defaultdict()
     # this is a list of all attributes.
     account = schema_meta['Entities'][0]['Attributes']
@@ -50,12 +50,12 @@ def get_rep_aliases(schema_meta, reduction_factor, embedding, embedding_dim, max
         natural_words1 = account[idx1]['NaturalWords']
         # Number of words to analyse according to memory availability
         n_words = len(aliases1)
-        # Not cluster if the # of aliases are less than 5. 
-        if n_words < embedding_dim:  
+        # Do not cluster if the # of aliases are less than min_num_aliases. 
+        if n_words <= min_num_aliases:  
             col_alias[col_name1] = aliases1
         else: 
-            m_ = max(int(n_words * reduction_factor), 1)
-            n_clusters = min(m_, max_num_cluster)
+            reduced_num = max(int(n_words * reduction_factor), 1)
+            n_clusters = min(reduced_num, max_num_cluster)
             cluster_data, wordlist = array_gen(aliases1, embedding, n_words, embedding_dim)
             cluster_data = np.nan_to_num(cluster_data)
             D = pairwise_distances(cluster_data)

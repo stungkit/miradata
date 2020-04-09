@@ -13,10 +13,13 @@ A suite of tools for generating high quality training and validation data for AI
 ### Requirements
 
 * python 3.6
+* Ubuntu
 
-### Dependencies
+### How to set up an environment
 
 ```
+conda create --name dataFactoryEnv python=3.6
+source activate dataFactoryEnv
 pip install -r requirements.txt
 ```
 

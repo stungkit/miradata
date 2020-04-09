@@ -4,7 +4,6 @@ import os
 import string
 import logging
 import argparse
-import msgpack
 import numpy as np
 from collections import defaultdict
 import pandas as pd
@@ -16,9 +15,9 @@ from shutil import copyfile
 from datetime import datetime
 from collections import Counter, defaultdict
 from config import set_args
-from nl2sq.key_alias import *
-from nl2sq.utils import *
-from nl2sq.sentence_similarity import *
+from src.data_science.key_alias import *
+from src.data_science.utils import *
+from src.data_science.sentence_similarity import *
 
 
 def main():
@@ -42,8 +41,8 @@ def main():
 
     # Get representative columns (k-medoid methods)
     if args.get_rep_aliases:
-        print("Get representative columns (k-medoid methods)")
-        get_rep_aliases(schema_meta, args.reduction_factor, embedding, args.embedding_dim)
+        print("Get representative aliases (k-medoid methods)")
+        get_rep_aliases(schema_meta, args.reduction_factor, embedding, args.embedding_dim, args.min_num_aliases, args.max_num_cluster)
     
     # Analyze confusing aliases (k-means)
     if args.analyze_confusion:
