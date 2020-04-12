@@ -16,6 +16,7 @@ from datetime import datetime
 from collections import Counter, defaultdict
 from config import set_args
 from src.data_science.key_alias import *
+from src.data_science.paraphrase import *
 from src.data_science.utils import *
 from src.data_science.sentence_similarity import *
 
@@ -43,6 +44,11 @@ def main():
     if args.get_rep_aliases:
         print("Get representative aliases (k-medoid methods)")
         get_rep_aliases(schema_meta, args.reduction_factor, embedding, args.embedding_dim, args.min_num_aliases, args.max_num_cluster)
+    
+    # Get paraphrases (back translation)
+    if args.get_paraphrase:
+        print("Get paraphrases (back-translation method)")
+        get_paraphrase(args.para_input)
     
     # Analyze confusing aliases (k-means)
     if args.analyze_confusion:

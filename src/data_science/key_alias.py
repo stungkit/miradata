@@ -61,7 +61,7 @@ def get_rep_aliases(schema_meta, reduction_factor, embedding, embedding_dim, min
             D = pairwise_distances(cluster_data)
             reps, _ = kMedoids(D, n_clusters)
             col_alias[col_name1] = [aliases1[i] for i in reps]
-    with open('representative_aliases.txt', 'w') as outfile:
+    with open('data/processed/representative_aliases.txt', 'w') as outfile:
         json.dump(col_alias, outfile)
 
 
@@ -69,7 +69,7 @@ def confusion_analysis(schema_meta, reduction_factor, embedding, embedding_dim):
     account = schema_meta['Entities'][0]['Attributes']
     opportunity = schema_meta['Entities'][1]['Attributes']
     
-    with io.open("column_confusion_analysis.txt", mode='w+', encoding="UTF-8") as file:
+    with io.open("data/processed/column_confusion_analysis.txt", mode='w+', encoding="UTF-8") as file:
         for idx1 in range(0, len(account)):
             aliases1 = account[idx1]['Aliases']
             col_name1 = account[idx1]['Column']
@@ -86,7 +86,7 @@ def confusion_analysis(schema_meta, reduction_factor, embedding, embedding_dim):
             model.fit(cluster_data)
 
             cluster_labels = model.labels_  # returns all cluster number assigned to each word respectively
-            cluster_to_words = assign_word2cluster(wordlist, cluster_labels)
+            cluster_to_words = __assign_word2cluster(wordlist, cluster_labels)
 
             # saving output in outut.text file
             print("\n########" + col_name1 + "########", file=file)
@@ -102,7 +102,7 @@ def similar_column_analysis(schema_meta, embedding):
                             'SimilarityScore', 'key1', 'key2'])
     max_score = 0.85
 
-    with open('out_alias.txt', 'w') as f:
+    with open('data/processed/out_alias.txt', 'w') as f:
         for idx1 in range(0, len(account)):
             for idx2 in range(idx1 + 1, len(account)):
                 q1_list = account[idx1]['Aliases']
@@ -130,7 +130,5 @@ def similar_column_analysis(schema_meta, embedding):
                             df = df.append({"alias1": q1, "alias2": q2, 'SimilarityScore': similarityScore,
                                             'key1': col_name1, 'key2': col_name2}, ignore_index=True)
     
-    # Cut the top n
-    # I'd recommend this step to be left for users. 
-    
+    # TODO: Cut the top n. Maybe this step to be left for users. 
     df.to_csv('similar_column_analysis.csv')

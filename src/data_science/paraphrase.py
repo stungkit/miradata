@@ -3,11 +3,10 @@ from collections import defaultdict
 from random import randint
 from time import sleep
 import json
-from . import utils
 import re
+from . import utils
 
 same_cnt = 0
-
 
 def paraphrase(original):
     """
@@ -36,17 +35,15 @@ def paraphrase(original):
     return paraphrased_set  # paraphrase
 
 
-if __name__ == "__main__":
-
-    # Replace the input file with your own.
-    original_sentences = utils.preprocess('intent.txt')
+def get_paraphrase(input_file):
+    original_sentences = utils.preprocess(input_file)
     paraphrased_sentences = defaultdict()
 
     for original_sentence in original_sentences:
         paraphrased_list = list(paraphrase(original_sentence))
         paraphrased_sentences[original_sentence] = paraphrased_list
 
-    with open('paraphrased.json', 'w') as outfile:
+    with open('data/processed/paraphrased.json', 'w') as outfile:
         json.dump(paraphrased_sentences, outfile)
 
-    #print ('total ', same_cnt, ' sentences are the same as original.')
+    print ('total ', same_cnt, ' sentences are the same as original.')

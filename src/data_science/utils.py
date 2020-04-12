@@ -223,6 +223,7 @@ def preprocess(filename):
             line = line.rstrip()
             list_of_sentences.append(line)
     return list_of_sentences
+    
 
 def load_meta(glovePath):
     print("Loading the glove...")
