@@ -1,4 +1,4 @@
-# naming in process
+# Data Factory
 
 ------------
 
@@ -13,10 +13,13 @@ A suite of tools for generating high quality training and validation data for AI
 ### Requirements
 
 * python 3.6
+* Ubuntu
 
-### Dependencies
+### How to set up an environment
 
 ```
+conda create --name dataFactoryEnv python=3.6
+source activate dataFactoryEnv
 pip install -r requirements.txt
 ```
 
@@ -44,7 +47,57 @@ python main.py --get_rep_aliases
 
 ### Paraphrase (Backtranslation)
 
--
+- We are using the back-tranlsation to generate paraphrases. Back translation is the process of bringing a previously translated text back to its original language without reference to the original source. It is originally employed to provide additional quality assurance for the most sensitive material.
+
+```
+ +-------------+    MT   +---------------------------+    BT    +-------------+    
+ |   English   |   ===>  |   Intermediate Lanauage   |   ===>	|   English   |    
+ +-------------+     	 +---------------------------+      	+-------------+     
+```
+
+- How to run
+```
+python main.py --paraphrase 
+```
+
+-  Sample Input
+
+Your input is a text file that contains sentences to be paraphrased, delimited by new lines. For example:
+
+```
+How many deals we created each month?
+What industry is our maximum revenue coming from?
+Display the deals by their closing year.
+```
+
+-  Sample Output
+
+Your output is a dictionary, dumped as json. For example:
+
+```
+{
+  "How many deals we created each month?": [
+                                              "How many deals have we made every month?",
+                                              "How much transaction did you do every month?",
+                                              "How many offers have we created each month?",
+                                              "How many transactions we have created each month?"
+                                            ],
+  "What industry is our maximum revenue coming from?": [
+                                                          "From which industry does our maximum income come from?",
+                                                          "From which industry do our maximum revenues come from?",
+                                                          "Which industry is the largest income source?",
+                                                          "Which industry is our maximum revenue?",
+                                                          "From which sector do our maximum income come from?"
+                                                        ],
+  "Display the deals by their closing year.": [
+                                                "View offers within the year of closure.",
+                                                "We display transactions by the end date of trading.",
+                                                "Show the deals at the end of their year.",
+                                                "Show offers by their year of closure."
+                                              ]
+  }      
+```
+
 
 ### Weak Supervision
 

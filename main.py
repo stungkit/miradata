@@ -4,7 +4,6 @@ import os
 import string
 import logging
 import argparse
-import msgpack
 import numpy as np
 from collections import defaultdict
 import pandas as pd
@@ -16,9 +15,10 @@ from shutil import copyfile
 from datetime import datetime
 from collections import Counter, defaultdict
 from config import set_args
-from nl2sq.key_alias import *
-from nl2sq.utils import *
-from nl2sq.sentence_similarity import *
+from src.data_science.key_alias import *
+from src.data_science.paraphrase import *
+from src.data_science.utils import *
+from src.data_science.sentence_similarity import *
 
 
 def main():
@@ -42,8 +42,18 @@ def main():
 
     # Get representative columns (k-medoid methods)
     if args.get_rep_aliases:
-        print("Get representative columns (k-medoid methods)")
-        get_rep_aliases(schema_meta, args.reduction_factor, embedding, args.embedding_dim)
+        print("Get representative aliases (k-medoid methods)")
+        get_rep_aliases(schema_meta, args.reduction_factor, embedding, args.embedding_dim, args.min_num_aliases, args.max_num_cluster)
+
+    # Get confusing columns
+    if args.get_confusing_colums:
+        print("Get confusing columns (cosine distance)")
+        get_confusing_colums(args.para_input)
+
+    # Get paraphrases (back translation)
+    if args.get_paraphrase:
+        print("Get paraphrases (back-translation method)")
+        get_paraphrase(args.para_input)
     
     # Analyze confusing aliases (k-means)
     if args.analyze_confusion:
@@ -54,6 +64,8 @@ def main():
     if args.analyze_sim_cols:
         print("Analyze Similar Columns")
         similar_column_analysis(schema_meta, embedding)
+
+
 
 
 if __name__ == '__main__':
