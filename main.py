@@ -50,6 +50,7 @@ def main():
         print("Get confusing columns (cosine distance)")
         get_confusing_colums(args.para_input)
 
+    
     # Get paraphrases (back translation)
     if args.get_paraphrase:
         print("Get paraphrases (back-translation method)")
